@@ -5,7 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 department_choices=(
     ("ADMIN", "Administration"),
     ("IT", "Information Technology"),
-    ("MEDIA", "Media")
+    ("MEDIA", "Media"),
 )
 
 gender_choices= (
