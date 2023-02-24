@@ -1,0 +1,4 @@
+django-phonenumber-field
+psycopg2
+django
+
