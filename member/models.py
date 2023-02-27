@@ -16,6 +16,7 @@ class Staff(models.Model):
     ("IT", "Information Technology"),
     ("MEDIA", "Media"),
     )
+
     firstname= models.CharField(max_length= 200, blank= False)
     lastname= models.CharField(max_length= 200, blank= False)
     Id= models.CharField(max_length= 100, primary_key= True, unique= True, default= 0)
@@ -54,9 +55,9 @@ def create_subclass(sender, instance, created, **kwargs):
     if created:
         if instance.department == 'IT':
             IT.objects.create(staff=instance)
-        elif instance.department == 'media':
+        elif instance.department == 'Media':
             Media.objects.create(staff=instance)
-        elif instance.department == 'admin':
+        elif instance.department == 'Admin':
             Admin.objects.create(staff=instance)
 
 def update_subclass(sender, instance, **kwargs):
