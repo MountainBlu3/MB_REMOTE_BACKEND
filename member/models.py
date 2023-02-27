@@ -9,7 +9,8 @@ gender_choices= (
     ("MALE", "Male"),
     ("FEMALE", "Female"),
 )
-valid_key=4
+
+
 class Staff(models.Model):
     department_choices=(
     ("ADMIN", "Administration"),
@@ -19,7 +20,7 @@ class Staff(models.Model):
 
     firstname= models.CharField(max_length= 200, blank= False)
     lastname= models.CharField(max_length= 200, blank= False)
-    Id= models.CharField(max_length= 100, primary_key= True, unique= True, default= 0)
+    staff_id= models.CharField(max_length= 100, primary_key= True, unique= True, default= 0)
     phonenumber= PhoneNumberField()
     email_address= models.EmailField()
     department= models.CharField(max_length= 100, choices=department_choices, blank= False)
@@ -30,25 +31,38 @@ class Staff(models.Model):
     account_name= models.CharField(max_length= 100, null= False, blank= False)
 
     def __str__(self):
-        return self.Id
+        return self.staff_id
     
-    def __init__(self, *args, **kwargs):
-        super(Staff, self).__init__(*args, **kwargs)
-        self._meta.get_field('id').max_length= len(self.firstname)+ len(self.lastname) + len(valid_key)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     if self.department == 'Administration':
+    #         IT.objects.create(staff=self)
+    #     elif self.department == 'Media':
+    #         Media.objects.create(staff=self)
+    #     elif self.department == 'Administration':
+    #         Admin.objects.create(staff=self)
+    
+    # def __init__(self, *args, **kwargs):
+    #     super(Staff, self).__init__(*args, **kwargs)
+    #     self._meta.get_field('Id').max_length= len(self.firstname)+ len(self.lastname) + len(valid_key)
     
 
 class IT(models.Model):
-    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, primary_key=True, related_name='it_staff', default= 'default')
-    speciality = models.CharField(max_length=100, default= 'default')
+    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, related_name='it_staff', primary_key= True)
+    specialization = models.CharField(max_length=100, default='unassigned', null= True)
 
 class Media(models.Model):
-    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, primary_key=True, related_name='media_staff', default= 'default')
-    media_type = models.CharField(max_length=100, default= 'default')
+    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, related_name='media_staff' , primary_key= True)
+    specialization = models.CharField(max_length=100, default='unassigned', null= True)
+
 
 
 class Admin(models.Model):
-    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, primary_key=True, related_name='admin_staff', default= 'default')
-    admin_role = models.CharField(max_length=100, default= 'default')
+    staff = models.OneToOneField(Staff, on_delete=models.CASCADE, related_name='admin_staff' , primary_key= True)
+    specialization = models.CharField(max_length=100, default= 'unassigned', null= True)
+
+
+
 
 @receiver(post_save, sender=Staff)
 def create_subclass(sender, instance, created, **kwargs):
