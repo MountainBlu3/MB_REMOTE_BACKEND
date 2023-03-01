@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import AbstractUser
 # from django.db.models.signals import post_save, post_delete
 # from django.dispatch import receiver
 
@@ -10,9 +11,13 @@ gender_choices= (
     ("FEMALE", "Female"),
 )
 
+
 class IT(models.Model):
     staff = models.OneToOneField('Staff', on_delete=models.CASCADE, primary_key= True, related_name='it_member' )
     specialization = models.CharField(max_length=100, default='unassigned')
+
+    class Meta:
+        verbose_name_plural= "IT"
 
 
     def __str__(self):
@@ -30,11 +35,15 @@ class Media(models.Model):
 class Admin(models.Model):
     staff = models.OneToOneField('Staff', on_delete=models.CASCADE, primary_key= True, related_name= 'admin_member')
     specialization = models.CharField(max_length=100, default= 'unassigned')
+    is_admin= models.BooleanField(default= True)
     class Meta:
         verbose_name_plural = "Admin"
 
     def __str__(self):
         return f"{self.staff.firstname} {self.staff.lastname} - {self.specialization}"
+
+
+
 
 class Staff(models.Model):
     department_choices=(
