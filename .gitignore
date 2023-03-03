@@ -1,3 +1,4 @@
 env
+templates
 __pycache__
 *.pyc
