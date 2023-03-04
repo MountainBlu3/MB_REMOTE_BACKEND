@@ -2,3 +2,4 @@ env
 templates
 __pycache__
 *.pyc
+db.sqlite3
